@@ -1,9 +1,9 @@
 <?php
 if (isset($_GET['submit'])) {
-    $firs_name = $_GET['firs_name']; // собираем переменные из GET
-    $last_name = $_GET['last_name'];
-    $phone = $_GET['phone'];
-    $age = $_GET['age'];
+    $firs_name = trim(strip_tags($_GET['firs_name'])); // собираем переменные из GET
+    $last_name = trim(strip_tags($_GET['last_name']));
+    $phone = trim(strip_tags($_GET['phone']));
+    $age = trim(strip_tags($_GET['age']));
     $arr = [$firs_name, $last_name, $phone, $age]; // Запихиваем их в массив для сериализации
     $codeArr = serialize($arr);
     setcookie('data', $codeArr, time() + 60 * 60 * 3); // кука установлена на 3 часа

@@ -1,12 +1,16 @@
 <?php
 if (!empty($_POST['save_cookie'])) {
-    setcookie($_POST['save_cookie'], $_POST['save_cookie']);
+    $save_cookie = trim(strip_tags($_POST['save_cookie']));
+    setcookie($save_cookie, $save_cookie);
 }
 if(!empty($_POST['del_cookie'])) {
-    setcookie($_POST['del_cookie'], '', time());
+    $del_cookie = trim(strip_tags($_POST['del_cookie']));
+    setcookie($del_cookie, '', time());
 }
 if(!empty($_POST['edit_cookie']) && !empty($_POST['edit_value'])) {
-    setcookie($_POST['edit_cookie'], $_POST['edit_value']);
+    $edit_cookie = trim(strip_tags($_POST['edit_cookie']));
+    $edit_value = trim(strip_tags($_POST['edit_value']));
+    setcookie($edit_cookie, $edit_value);
 }
 
 
