@@ -49,6 +49,9 @@
                 <?php
                 $date1 = '';
                 $date2 = '';
+                function clear ($date) {
+                    return strip_tags(trim($date));
+                }
 
                 if (empty($_POST['submit'])) {                                    // проверяю нажата ли кнопка submit
                     echo "Давайте же заполним форму и отправим ее!";
@@ -56,7 +59,7 @@
                     if (empty($_POST['date1'])) {
                         echo "Вы не указали дату-1";
                     } else {
-                        $date1 = $_POST['date1'];                               // полученные данные записыаваем в переменную и записываем это все в массив
+                        $date1 = clear($_POST['date1']);                               // полученные данные записыаваем в переменную и записываем это все в массив
                         $piecesDATA1 = explode("-", $date1);
                         if (count($piecesDATA1) != 3) {
                             echo "Дату нужно водить в формате ГОД-МЕСЯЦ-ДЕНЬ через дефис";
@@ -73,7 +76,7 @@
                     if (empty($_POST['date2'])) {
                         echo "Вы не указали дату-2";
                     } else {
-                        $date2 = $_POST['date2'];
+                        $date2 = clear($_POST['date2']);
                         $piecesDATA2 = explode("-", $date2);
                         if (count($piecesDATA2) != 3) {
                             echo "Дату нужно водить в формате ГОД-МЕСЯЦ-ДЕНЬ через дефис";
@@ -110,16 +113,6 @@
                         echo $piecesDATA1[0] . " год высокосный" . '<br>';
                     }
                 }
-
-                if (empty($piecesDATA2)) {
-                    echo "Данные еще не ввели" . '<br>';
-                } else {
-                    if (leapyear($piecesDATA2[0]) == 0) {
-                        echo $piecesDATA2[0] . " год НЕ высокосный" . '<br>';
-                    } else {
-                        echo $piecesDATA2[0] . " год высокосный" . '<br>';
-                    }
-                }
                 ?>
             </td>
         </tr>
@@ -132,7 +125,7 @@
                 Сравните, какая из введенных дат больше.
                 С помощью функций explode и mktime переведите большую дату в формат timestamp.\
                 По этому timestamp узнайте день недели (словом, латиницей) и выведите его на экран. */
-                if (empty($piecesDATA1) && empty($piecesDATA2)) {
+                if (empty($piecesDATA1) OR empty($piecesDATA2)) {
                     echo "Данные еще не ввели";
                 } else {
                     $q = mktime(0, 0, 0, $piecesDATA1[1], $piecesDATA1[2], $piecesDATA1[0]); // дата - 1 в mktime
@@ -161,7 +154,7 @@
                     echo "Данные еще не ввели";
                 } else {
                     echo $date1 . " Введеная дата номер один" . '<br>';
-                    $w = mktime(0, 0, 0, $piecesDATA1[1], $piecesDATA1[2], $piecesDATA1[0]) + (60 * 60 * 24 * (365 + 62));
+                    $w = mktime(0, 0, 0, $piecesDATA1[1] + 2, $piecesDATA1[2] + 3, $piecesDATA1[0] + 1);
                     echo date("Y-m-d", $w) . ' плюс 1 год 2 месяца и 3 дня' . '<br>';
                     echo date("Y-m-d", $w - 423000) . " минус 5 дней";
                 }
@@ -178,8 +171,9 @@
                 if (empty($_GET['date'])) {
                     echo "Введите в адресную строку значение date";
                 } else {
+                    $date_get = clear($_GET['date']);
                     for ($i = 1; $i < 12; $i++) {
-                        if (date('w', mktime(0, 0, 0, $i, 1, $_GET['date'])) == 0) {
+                        if (date('w', mktime(0, 0, 0, $i, 1, $date_get)) == 0) {
                             $countDay++;
                         }
                     }
@@ -198,9 +192,10 @@
                 if (empty($_GET['date'])) {
                     echo "Введите в адресную строку значение date";
                 } else {
+                    $date_get = clear($_GET['date']);
                     for ($i = 1; $i < 12; $i++) {
-                        if (date('w', mktime(0, 0, 0, $i, 13, $_GET['date'])) == 5) {
-                            echo date('Y-m-d', mktime(0, 0, 0, $i, 13, $_GET['date'])) . '<br>';
+                        if (date('w', mktime(0, 0, 0, $i, 13, $date_get)) == 5) {
+                            echo date('Y-m-d', mktime(0, 0, 0, $i, 13, $date_get)) . '<br>';
                         }
                     }
                 }
@@ -216,7 +211,7 @@
                 if (empty($_GET['date'])) {
                     echo "Введите в адресную строку значение date";
                 } else {
-                    $qwe = $_GET['date'] - 3;
+                    $qwe = clear($_GET['date']) - 3;
                     switch ($qwe) {
                         case($qwe % 12 == 1):
                             echo "Крыса";
@@ -272,10 +267,10 @@
                     echo date('Y-m-d') . ' - Текущая дата' . '<br>';
                     $enterTime = mktime(23, 59, 59, $piecesDATA1[1], $piecesDATA1[2], $piecesDATA1[0]);
                     echo '<br>';
-                    echo time() - $enterTime . ' секунд прошло с ' . $date1 . '<br>';
-                    echo (time() - $enterTime) / 60 . ' минут прошло с ' . $date1 . '<br>';
-                    echo (time() - $enterTime) / 60 / 60 . ' часов прошло с ' . $date1 . '<br>';
-                    echo (time() - $enterTime) / 60 / 60 / 24 . ' дней прошло с ' . $date1 . '<br>';
+                    echo round(time() - $enterTime) . ' секунд прошло с ' . $date1 . '<br>';
+                    echo round((time() - $enterTime) / 60) . ' минут прошло с ' . $date1 . '<br>';
+                    echo round((time() - $enterTime) / 60 / 60) . ' часов прошло с ' . $date1 . '<br>';
+                    echo round((time() - $enterTime) / 60 / 60 / 24) . ' дней прошло с ' . $date1 . '<br>';
                 }
                 ?>
             </td>
@@ -444,34 +439,22 @@
                 Функция должна иметь следующие параметры: type, name, value, placeholder.
                 В функцию на вход может попасть только input или textarea.
                 В любом другом случае необходимо вывести предупреждение об ошибке.*/
-                function htmlElements($qwe)
+
+                function html_elements($type, $name, $value, $placeholder)
                 {
-                    if ($qwe == "input") {
-                        echo "<input type='text' name='text1' value='text'>" . '<br>';
+                    if ($type == 'input') {
+                        return '<input type="$type" name="' . $name . '" value="' . $value . '" placeholder="' . $placeholder . '">';
+                    } elseif ($type == 'textarea') {
+                        return '<textarea name="' . $name . '" placeholder="' . $placeholder . '">' . $value . '</textarea>';
                     }
-                    if ($qwe == "textarea") {
-                        echo "<textarea name='text2' placeholder='какой то произвольный текст'></textarea>" . '<br>';
-                    }
-                    if ($qwe != "input" && $qwe != "textarea") {
-                        echo "Мы тут не тем занимаемся, введите или input или textarea ! ! ! Comrade";
-                    }
+                    return 'Первым параметром должен быть только input или textarea';
                 }
 
                 ?>
-                <form method="post">
-                    <fieldset style="width: 200px">
-                        <?php htmlElements('input') ?>
-                        <?php htmlElements('textarea') ?>
-                    </fieldset>
-                </form>
-                <?php
-                if (empty($_POST['text1']) && empty($_POST['text2'])) {
-                    echo "Введите данные";
-                } else {
-                    echo $_POST['text1'] . '<br>';
-                    echo $_POST['text2'] . '<br>';
-                }
-                ?>
+                <fieldset style="width: 200px">
+                    <?php echo html_elements('input', 'text1', 'допустим тема письма', 'placeholder') . '<br>'; ?>
+                    <?php echo html_elements('textarea', 'text2', 'допустим какой то текст', 'placeholder'); ?>
+                </fieldset>
             </td>
         </tr>
         <tr>
@@ -503,8 +486,7 @@
                     1 => array('value' => 'html', 'text' => 'Язык HTML'),
                 );
                 select('select', $arr);
-                /*это задание было для меня сложныйм но полезным... пришлось списывать =(
-                суть - теги селект и опшн писать не в php а в html, */
+                /*это задание было для меня сложныйм но полезным... пришлось списывать =( */
                 ?>
             </td>
         </tr>
