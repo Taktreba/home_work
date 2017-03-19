@@ -1,38 +1,43 @@
 <?php
-if (!empty($_POST['save_cookie'])) {
-    $save_cookie = trim(strip_tags($_POST['save_cookie']));
-    setcookie($save_cookie, $save_cookie);
+function save_cookie($a, $b)
+{
+    $x = trim(strip_tags($a));
+    $z = trim(strip_tags($b));
+    setcookie($x, $z, time() + 300);
 }
-if(!empty($_POST['del_cookie'])) {
-    $del_cookie = trim(strip_tags($_POST['del_cookie']));
-    setcookie($del_cookie, '', time());
-}
-if(!empty($_POST['edit_cookie']) && !empty($_POST['edit_value'])) {
-    $edit_cookie = trim(strip_tags($_POST['edit_cookie']));
-    $edit_value = trim(strip_tags($_POST['edit_value']));
-    setcookie($edit_cookie, $edit_value);
+
+if (empty($_POST['new_cookie']) && empty($_POST['new_value'])) {
+    echo 'Тут будут выводиться созданые cookie' . '<br>';
+} else {
+    save_cookie($_POST['new_cookie'], $_POST['new_value']);
+    print_r($_COOKIE);
 }
 
 
-echo "<pre>";
-var_dump($_COOKIE);
-echo "</pre>";
+
 ?>
-<br>
-<br>
-<br>
-<form method="post" action="">
-    <label><input type="text" name="save_cookie">Сохранение(создание) новой куки</label><br>
-    <label><input type="submit" name="submit"></label><br>
-</form>
-<form method="post" action="">
-    <label><input type="text" name="edit_cookie">Какую куку хотим заменить</label><br>
-    <label><input type="text" name="edit_value">на что меняем куку</label><br>
-    <label><input type="submit" name="submit"></label><br>
-</form>
-<form method="post" action="">
-    <label><input type="text" name="del_cookie">Удаление куки</label><br>
-    <label><input type="submit" name="submit"></label><br>
+<p><b><i>Ликбез</i></b> - форма для создания, редактирования и удаление cookie. Срок жизни cookie 5 минут.<br><i>Создание:</i>
+    Для создане
+    cookie введите имя и значение
+    в
+    соответствующие поля формы.<br><i>Редактирование:</i> Для редактирования cookie введите в форму имя куки которую
+    хотите
+    заменить и ee новое значение. <br><i>Удаление:</i> Для удаления cookie введите имя cookie в поле формы которую
+    хотите
+    удалить, а поле значение оставте <u>пустым</u></p>
+<form action="" method="post">
+    <label><input type="text" name="new_cookie">Имя куки</label><br>
+    <label><input type="text" name="new_value">Значение куки</label><br>
+    <input type="submit" value="Submit" name="save_cookie"><br>
 </form>
 
-<a href='DZ-7_index.php'>Возврат на index.php</a>"
+<!--<form action="" method="GET">-->
+<!--    <label><input type="text" name="updateName">Имя изменяемой куки</label><br>-->
+<!--    <label><input type="text" name="updateValue">Значение изменяемой куки</label><br>-->
+<!--    <input type="submit" value="Изменить!" name="edit_cookie"><br>-->
+<!--</form>-->
+<!--<form action="" method="GET">-->
+<!--    <label><input type="text" name="deleteName">Удалить куку</label><br>-->
+<!--    <input type="submit" value="Удалить!" name="del_cookie"><br>-->
+<!--</form>-->
+<a href="DZ-7_index.php">index.php</a>
