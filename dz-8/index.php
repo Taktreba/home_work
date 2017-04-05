@@ -3,15 +3,17 @@ session_start();
 $sec = 0;
 if (!isset($_SESSION['user_inter'])) {
     $_SESSION['user_inter'] = date('Y-m-d H:i:s');
+    $sec = 'Добро пожаловать на сайт';
+    echo $sec;
 } else {
     $sec = time() - strtotime($_SESSION['user_inter']);
+    echo 'Вы находитесь на сайте ' . $sec . ' секунд'; // считаем секунды преведенные на сайте
 }
-echo 'Вы находитесь на сайте ' . $sec . ' секунд назад'; // считаем секунды преведенные на сайте
 
 echo '<hr>';
 
 if (!isset($_SESSION['inter'])) { // считаем количество посицений сайта
-    echo 'Вы еще не заходили на сайт';
+    echo 'Вы первый раз на сайте';
     $_SESSION['inter'] = 0;
 } else {
     $_SESSION['inter']++;
